@@ -5,14 +5,13 @@ using System.Text;
 
 namespace HireCore.ConsoleApp.State
 {
-    internal class InterviewState: ICandidateState
+    internal class ReferenceCheckState: ICandidateState
     {
-        public string Name => "INTERVIEW";
+        public string Name => "REFERENCE_CHECK";
 
         public void Advance(Candidate candidate, ICandidateState newState)
         {
-            // Se añade la nueva etapa de Prueba Técnica como opción válida[cite: 1]
-            if (newState is TechnicalTestState || newState is OfferState || newState is RejectedState)
+            if (newState is HiredState || newState is RejectedState)
             {
                 candidate.SetState(newState);
             }

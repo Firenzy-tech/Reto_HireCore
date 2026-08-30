@@ -1,4 +1,4 @@
-﻿namespace Reto_1.Entities
+﻿namespace HireCore.ConsoleApp.Domain
 {
     public static class HireStatus
     {

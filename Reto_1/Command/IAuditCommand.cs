@@ -4,7 +4,10 @@ using System.Text;
 
 namespace HireCore.ConsoleApp.Command
 {
-    internal interface IAuditCommand
+    public interface IAuditCommand
     {
+        void Execute();
+        void Undo();
+        void PrintAudit();
     }
 }

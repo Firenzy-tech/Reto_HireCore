@@ -1,0 +1,8 @@
+Patrón recomendado: State (Estado).
+
+Patrón recomendado: Observer (Observador).
+
+Patrones recomendados: Command (Comando) combinado con Memento (Recuerdo).
+
+
+------------------------------

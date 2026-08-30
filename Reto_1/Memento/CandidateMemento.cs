@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HireCore.ConsoleApp.State;
 
 namespace HireCore.ConsoleApp.Memento
 {
-    internal class CandidateMemento
-    {
-    }
+    public record CandidateMemento(ICandidateState State);
 }

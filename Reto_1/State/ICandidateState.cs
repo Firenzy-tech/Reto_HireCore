@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HireCore.ConsoleApp.Domain;
 
 namespace HireCore.ConsoleApp.State
 {
-    internal interface ICandidateState
+    public interface ICandidateState
     {
+        string Name { get; }
+        void Advance(Candidate candidate, ICandidateState newState);
     }
 }
