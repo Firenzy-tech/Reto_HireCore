@@ -1,82 +1,71 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Reto_1.Entities;
 using Reto_1.Entities.DTOs;
+using Reto_1.Services.Commands;
 using Reto_1.Services.HireServices;
+using Reto_1.Services.NotificationServices;
+using Reto_1.Services.Observers;
 
 namespace Reto_1
 {
     public class Program
     {
-
         private readonly IHireService _hireService;
 
-  
         public Program(IHireService hireService)
         {
             _hireService = hireService;
         }
 
-
         private static IServiceProvider ConfigureServices()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IHireService, HireService>();
+            serviceCollection.AddSingleton<IServiceNotifications, ServiceNotifications>();
+            serviceCollection.AddSingleton<ICommandHistory, CommandHistory>();
+            serviceCollection.AddSingleton<IHireObserver, RecruiterObserver>();
+            serviceCollection.AddSingleton<IHireObserver, HiringManagerObserver>();
+            serviceCollection.AddSingleton<IHireObserver, PayrollObserver>();
+            serviceCollection.AddSingleton<IHireObserver, CandidatePortalObserver>();
+            serviceCollection.AddSingleton<IHireService, HireService>();
             serviceCollection.AddTransient<Program>();
             return serviceCollection.BuildServiceProvider();
         }
 
         public static async Task Main(string[] args)
         {
-           
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             var serviceProvider = ConfigureServices();
             var program = serviceProvider.GetRequiredService<Program>();
 
-            var data = await program._hireService.ChangeStatus("CC", "123456789", HireStatus.STATUS_ENTREVISTA);
-           
+            await program.Run();
         }
 
- 
-
-        public void ChangeStatus(Candidato candidato, string nuevoEstado)
+        private async Task Run()
         {
-            if (candidato.Estado == STATUS_APLICADO && nuevoEstado == STATUS_ENTREVISTA)
+            Print(await _hireService.ChangeStatus("CC", "123456789", HireStatus.STATUS_ENTREVISTA, "laura.gomez"));
+            Print(await _hireService.ChangeStatus("CC", "123456789", HireStatus.STATUS_CONTRATADO, "laura.gomez"));
+            Print(await _hireService.ChangeStatus("CC", "123456789", HireStatus.STATUS_OFERTA, "laura.gomez"));
+            Print(await _hireService.ChangeStatus("CC", "123456789", HireStatus.STATUS_RECHAZADO, "carlos.ruiz"));
+            Print(await _hireService.Undo("carlos.ruiz"));
+            Print(await _hireService.ChangeStatus("CC", "123456789", HireStatus.STATUS_CONTRATADO, "laura.gomez"));
+
+            Console.WriteLine("AUDITORÍA");
+
+            foreach (var entry in _hireService.AuditTrail())
             {
-                candidato.Estado = STATUS_ENTREVISTA;
-                EmailService.Enviar(candidato.ReclutadorEmail, $"{candidato.Nombre} pasó a entrevista");
-            }
-            else if (candidato.Estado == STATUS_ENTREVISTA && nuevoEstado == STATUS_OFERTA)
-            {
-                candidato.Estado = STATUS_OFERTA;
-                EmailService.Enviar(candidato.ReclutadorEmail, $"Oferta enviada a {candidato.Nombre}");
-            }
-            else if (candidato.Estado == STATUS_OFERTA && nuevoEstado == STATUS_CONTRATADO)
-            {
-                candidato.Estado = STATUS_CONTRATADO;
-                EmailService.Enviar(candidato.ReclutadorEmail, $"{candidato.Nombre} fue contratado");
-            }
-            else if (nuevoEstado == STATUS_RECHAZADO)
-            {
-                candidato.Estado = STATUS_RECHAZADO;
-                EmailService.Enviar(candidato.ReclutadorEmail, $"{candidato.Nombre} fue rechazado");
-            }
-            else
-            {
-                throw new Exception($"Transición inválida: {candidato.Estado} -> {nuevoEstado}");
+                var undone = entry.UndoneBy == null
+                    ? string.Empty
+                    : $" | deshecho por {entry.UndoneBy} el {entry.UndoneAt}";
+
+                Console.WriteLine($"{entry.ExecutedAt} | {entry.ExecutedBy} | {entry.Description}{undone}");
             }
         }
 
-       
+        private static void Print(ResponseDto response)
+        {
+            Console.WriteLine($"{(response.Success ? "OK" : "ERROR")}: {response.Message}");
+            Console.WriteLine();
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
