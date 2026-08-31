@@ -4,7 +4,7 @@ namespace HireCore.ConsoleApp.State
 {
     public class HiredState : ICandidateState
     {
-        public string Name => "HIRED";
+        public string Name => HireStatus.CONTRATADO;
         public void Advance(Candidate candidate, ICandidateState newState) =>
             throw new InvalidOperationException("Process completed. Cannot advance from HIRED.");
     }

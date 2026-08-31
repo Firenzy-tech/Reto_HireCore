@@ -7,7 +7,7 @@ namespace HireCore.ConsoleApp.State
 {
     public class AppliedState : ICandidateState
     {
-        public string Name => "APPLIED";
+        public string Name => HireStatus.APLICADO;
 
         public void Advance(Candidate candidate, ICandidateState newState)
         {

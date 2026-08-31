@@ -17,7 +17,6 @@ namespace HireCore.ConsoleApp.Command
         {
             _previousState = _candidate.SaveState();
 
-            // Delega la validación y ejecución a la máquina de estados del candidato
             _candidate.RequestTransition(_newState);
 
             Console.WriteLine($"[Ejecutado] {_author} cambió el estado a '{_newState.Name}' en {_timestamp:HH:mm:ss}");

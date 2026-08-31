@@ -1,13 +1,10 @@
 ﻿using HireCore.ConsoleApp.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HireCore.ConsoleApp.State
 {
     internal class InterviewState: ICandidateState
     {
-        public string Name => "INTERVIEW";
+        public string Name => HireStatus.ENTREVISTA;
 
         public void Advance(Candidate candidate, ICandidateState newState)
         {

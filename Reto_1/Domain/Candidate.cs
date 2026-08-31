@@ -11,7 +11,7 @@ namespace HireCore.ConsoleApp.Domain
         public Candidate(string name)
         {
             Name = name;
-            CurrentState = new AppliedState(); // Estado inicial por defecto
+            CurrentState = new AppliedState(); 
         }
 
         // Este método es usado SOLO por las clases State para confirmar el cambio interno

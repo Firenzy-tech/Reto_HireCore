@@ -1,13 +1,10 @@
 ﻿using HireCore.ConsoleApp.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HireCore.ConsoleApp.State
 {
     public class TechnicalTestState: ICandidateState
     {
-        public string Name => "TECHNICAL_TEST";
+        public string Name => HireStatus.PRUEBA_TECNICA;
 
         public void Advance(Candidate candidate, ICandidateState newState)
         {

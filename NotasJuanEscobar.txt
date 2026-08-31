@@ -6,3 +6,9 @@ Patrones recomendados: Command (Comando) combinado con Memento (Recuerdo).
 
 
 ------------------------------
+Patrones Implementados:
+1.	State Pattern: Gestiona los diferentes estados del candidato (Aplicado, Entrevista, Prueba Técnica, Oferta, Referencias, Contratado, Rechazado)
+2.	Observer Pattern: Notifica a diferentes observadores (Reclutador, Gerente, Nómina, Portal del Candidato) cuando cambia el estado
+3.	Command Pattern: Encapsula las acciones de cambio de estado con capacidad de deshacer (Undo)
+4.	Memento Pattern: Guarda y restaura estados anteriores del candidato
+El sistema permite gestionar el proceso de contratación con trazabilidad, notificaciones automáticas y capacidad de auditoría.

@@ -11,11 +11,6 @@ namespace HireCore.ConsoleApp.Observer
             _observers.Add(observer);
         }
 
-        public void Unsubscribe(ITransitionObserver observer)
-        {
-            _observers.Remove(observer);
-        }
-
         public void Notify(Candidate candidate, string oldState, string newState)
         {
             foreach (var observer in _observers)

@@ -1,40 +1,92 @@
 ﻿using HireCore.ConsoleApp.Command;
 using HireCore.ConsoleApp.Domain;
+using HireCore.ConsoleApp.Observer;
 using HireCore.ConsoleApp.State;
+using System;
 
-namespace HireCore.ConsoleApp;
-
-static class Program
+class Program
 {
     static void Main()
     {
         var auditHistory = new AuditHistory();
-        var candidate = new Candidate("Laura Gómez");
+        var notificationManager = new NotificationManager();
 
-        Console.WriteLine($"Estado inicial: {candidate.CurrentState.Name}");
+        notificationManager.Subscribe(new RecruiterNotifier());
+        notificationManager.Subscribe(new HiringManagerNotifier());
+        notificationManager.Subscribe(new PayrollNotifier());
+        notificationManager.Subscribe(new CandidatePortalNotifier());
 
-        try
+        var manager = new CandidateManager(auditHistory, notificationManager);
+        var candidate = new Candidate("Carlos Escobar");
+        string currentUser = "HR_Admin";
+
+        bool exit = false;
+
+        // 2. Bucle interactivo de consola
+        while (!exit)
         {
-            var cmd1 = new ChangeStateCommand(candidate, new InterviewState(), "HR_User");
-            auditHistory.ExecuteCommand(cmd1);
+            Console.WriteLine("\n=================================================");
+            Console.WriteLine($"Candidato: {candidate.Name} | Estado Actual: [{candidate.CurrentState.Name}]");
+            Console.WriteLine("=================================================");
+            Console.WriteLine("Seleccione una acción:");
+            Console.WriteLine("1. Avanzar a INTERVIEW (Entrevista)");
+            Console.WriteLine("2. Avanzar a TECHNICAL_TEST (Prueba Técnica)");
+            Console.WriteLine("3. Avanzar a OFFER (Oferta)");
+            Console.WriteLine("4. Avanzar a REFERENCE_CHECK (Referencias)");
+            Console.WriteLine("5. Avanzar a HIRED (Contratado)");
+            Console.WriteLine("6. Cambiar a REJECTED (Rechazado)");
+            Console.WriteLine("7. Deshacer última acción (Undo)");
+            Console.WriteLine("8. Ver Historial de Auditoría");
+            Console.WriteLine("9. Salir");
+            Console.Write("\nOpción: ");
 
-            var cmd2 = new ChangeStateCommand(candidate, new TechnicalTestState(), "Tech_Lead");
-            auditHistory.ExecuteCommand(cmd2);
+            string? choice = Console.ReadLine();
+            Console.WriteLine(); 
 
-            Console.WriteLine("\n--- Intentando salto inválido ---");
-            var errorCmd = new ChangeStateCommand(candidate, new HiredState(), "Manager");
-            auditHistory.ExecuteCommand(errorCmd);
+            try
+            {
+                switch (choice)
+                {
+                    case "1":
+                        manager.AdvanceState(candidate, new InterviewState(), currentUser);
+                        break;
+                    case "2":
+                        manager.AdvanceState(candidate, new TechnicalTestState(), currentUser);
+                        break;
+                    case "3":
+                        manager.AdvanceState(candidate, new OfferState(), currentUser);
+                        break;
+                    case "4":
+                        manager.AdvanceState(candidate, new ReferenceCheckState(), currentUser);
+                        break;
+                    case "5":
+                        manager.AdvanceState(candidate, new HiredState(), currentUser);
+                        break;
+                    case "6":
+                        manager.AdvanceState(candidate, new RejectedState(), currentUser);
+                        break;
+                    case "7":
+                        auditHistory.UndoLast();
+                        break;
+                    case "8":
+                        auditHistory.ShowAuditTrail();
+                        break;
+                    case "9":
+                        exit = true;
+                        Console.WriteLine("Saliendo del sistema HireCore...");
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida. Intente de nuevo.");
+                        break;
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                // El patrón State lanza esta excepción si la transición no está permitida
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"[ERROR DE NEGOCIO] {ex.Message}");
+                Console.ResetColor();
+            }
         }
-        catch (InvalidOperationException ex)
-        {
-            Console.WriteLine($"[Error de Validación] {ex.Message}");
-        }
-
-        auditHistory.ShowAuditTrail();
-
-
-        Console.WriteLine("\n--- Deshaciendo última acción exitosa ---");
-        auditHistory.UndoLast();
-        Console.WriteLine($"Estado actual tras Undo: {candidate.CurrentState.Name}");
     }
 }

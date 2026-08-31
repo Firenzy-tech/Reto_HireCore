@@ -1,7 +1,4 @@
 ﻿using HireCore.ConsoleApp.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HireCore.ConsoleApp.Observer
 {
@@ -9,7 +6,7 @@ namespace HireCore.ConsoleApp.Observer
     {
         public void Update(Candidate candidate, string oldState, string newState)
         {
-            if (newState == "OFFER" || newState == "HIRED")
+            if (newState == HireStatus.OFERTA || newState == HireStatus.CONTRATADO)
             {
                 Console.WriteLine($"[Email a Gerente] {candidate.Name} está en etapa de {newState}.");
             }

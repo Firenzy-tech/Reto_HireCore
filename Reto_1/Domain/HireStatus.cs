@@ -2,13 +2,12 @@
 {
     public static class HireStatus
     {
-
-        public const string STATUS_APLICADO = "APLICADO";
-        public const string STATUS_ENTREVISTA = "ENTREVISTA";
-        public const string STATUS_OFERTA = "OFERTA";
-        public const string STATUS_CONTRATADO = "CONTRATADO";
-        public const string STATUS_RECHAZADO = "RECHAZADO";
-
-
+        public const string APLICADO = nameof(APLICADO);
+        public const string ENTREVISTA = nameof(ENTREVISTA);
+        public const string OFERTA = nameof(OFERTA);
+        public const string CONTRATADO = nameof(CONTRATADO);
+        public const string RECHAZADO = nameof(RECHAZADO);
+        public const string PRUEBA_TECNICA = nameof(PRUEBA_TECNICA);
+        public const string REFERENCIA = nameof(REFERENCIA);
     }
 }
