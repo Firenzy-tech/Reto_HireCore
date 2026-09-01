@@ -1,13 +1,36 @@
 ﻿namespace HireCore.ConsoleApp.Domain
 {
-    public static class HireStatus
+    public enum HireStatus
     {
-        public const string APLICADO = nameof(APLICADO);
-        public const string ENTREVISTA = nameof(ENTREVISTA);
-        public const string OFERTA = nameof(OFERTA);
-        public const string CONTRATADO = nameof(CONTRATADO);
-        public const string RECHAZADO = nameof(RECHAZADO);
-        public const string PRUEBA_TECNICA = nameof(PRUEBA_TECNICA);
-        public const string REFERENCIA = nameof(REFERENCIA);
+        RECHAZADO = 0,
+        APLICADO = 1,
+        ENTREVISTA = 2,
+        PRUEBA_TECNICA = 3,
+        REFERENCIA = 4,
+        OFERTA = 5,
+        CONTRATADO = 6
     }
+
+
+
+    public static class HireStatusExtensions
+    {
+        private static readonly Dictionary<HireStatus, string> StatusNames = new()
+        {
+            { HireStatus.APLICADO, "Entrevista" },
+            { HireStatus.ENTREVISTA, "Prueba Técnica" },
+            { HireStatus.PRUEBA_TECNICA, "Referencia" },
+            { HireStatus.REFERENCIA, "Oferta" },
+            { HireStatus.OFERTA, "Contratado" },
+            { HireStatus.CONTRATADO, "" }
+        };
+        public static string GetName(this HireStatus status)
+        {
+            return StatusNames.TryGetValue(status, out var name) ? name : status.ToString();
+        }
+    }
+
+
+
 }
+

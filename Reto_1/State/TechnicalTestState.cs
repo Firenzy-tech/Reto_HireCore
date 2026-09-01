@@ -4,7 +4,7 @@ namespace HireCore.ConsoleApp.State
 {
     public class TechnicalTestState: ICandidateState
     {
-        public string Name => HireStatus.PRUEBA_TECNICA;
+        public string Name => HireStatus.PRUEBA_TECNICA.ToString();
 
         public void Advance(Candidate candidate, ICandidateState newState)
         {

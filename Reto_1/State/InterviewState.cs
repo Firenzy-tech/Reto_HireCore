@@ -4,7 +4,7 @@ namespace HireCore.ConsoleApp.State
 {
     internal class InterviewState: ICandidateState
     {
-        public string Name => HireStatus.ENTREVISTA;
+        public string Name => HireStatus.ENTREVISTA.ToString();
 
         public void Advance(Candidate candidate, ICandidateState newState)
         {

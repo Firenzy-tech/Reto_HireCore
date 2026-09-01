@@ -6,7 +6,7 @@ namespace HireCore.ConsoleApp.Observer
     {
         public void Update(Candidate candidate, string oldState, string newState)
         {
-            if (newState == HireStatus.CONTRATADO)
+            if (newState == HireStatus.CONTRATADO.ToString())
             {
                 Console.WriteLine($"[Alerta a Nómina] {candidate.Name} fue {newState}. Iniciar proceso de ingreso.");
             }

@@ -1,8 +1,8 @@
 ﻿using HireCore.ConsoleApp.Command;
 using HireCore.ConsoleApp.Domain;
+using HireCore.ConsoleApp.Helpers;
 using HireCore.ConsoleApp.Observer;
 using HireCore.ConsoleApp.State;
-using System;
 
 class Program
 {
@@ -18,11 +18,10 @@ class Program
 
         var manager = new CandidateManager(auditHistory, notificationManager);
         var candidate = new Candidate("Carlos Escobar");
-        string currentUser = "HR_Admin";
+        string currentUser = NameHelper.GetRandom();
 
         bool exit = false;
 
-        // 2. Bucle interactivo de consola
         while (!exit)
         {
             Console.WriteLine("\n=================================================");
@@ -82,7 +81,6 @@ class Program
             }
             catch (InvalidOperationException ex)
             {
-                // El patrón State lanza esta excepción si la transición no está permitida
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"[ERROR DE NEGOCIO] {ex.Message}");
                 Console.ResetColor();

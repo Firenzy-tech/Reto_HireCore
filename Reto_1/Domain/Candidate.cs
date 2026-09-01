@@ -3,18 +3,11 @@ using HireCore.ConsoleApp.State;
 
 namespace HireCore.ConsoleApp.Domain
 {
-    public class Candidate
+    public class Candidate(string name)
     {
-        public string Name { get; }
-        public ICandidateState CurrentState { get; private set; }
+        public string Name { get; } = name;
+        public ICandidateState CurrentState { get; private set; } = new AppliedState();
 
-        public Candidate(string name)
-        {
-            Name = name;
-            CurrentState = new AppliedState(); 
-        }
-
-        // Este método es usado SOLO por las clases State para confirmar el cambio interno
         public void SetState(ICandidateState state)
         {
             CurrentState = state;

@@ -7,7 +7,7 @@ namespace HireCore.ConsoleApp.State
 {
     internal class ReferenceCheckState: ICandidateState
     {
-        public string Name => HireStatus.REFERENCIA;
+        public string Name => HireStatus.REFERENCIA.ToString();
 
         public void Advance(Candidate candidate, ICandidateState newState)
         {
